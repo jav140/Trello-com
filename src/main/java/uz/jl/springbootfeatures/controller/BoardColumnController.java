@@ -9,6 +9,7 @@ import uz.jl.springbootfeatures.dtos.board.BoardGetAllDto;
 import uz.jl.springbootfeatures.dtos.board.BoardUpdateDto;
 import uz.jl.springbootfeatures.dtos.column.ColumnCreateDto;
 import uz.jl.springbootfeatures.dtos.column.ColumnGetDto;
+import uz.jl.springbootfeatures.dtos.column.ColumnMoveDTO;
 import uz.jl.springbootfeatures.dtos.column.ColumnUpdateDto;
 import uz.jl.springbootfeatures.response.ApiResponse;
 import uz.jl.springbootfeatures.services.BoardColumnService;
@@ -24,7 +25,7 @@ public class BoardColumnController extends ApiController<BoardColumnService> {
     }
 
     @PostMapping(PATH + "/column/createColumn")
-    public ApiResponse<Void> createColumn(@Valid @RequestBody ColumnCreateDto dto, @AuthenticationPrincipal UserDetails userDetails) {
+    public ApiResponse<Void> createColumn( @RequestBody ColumnCreateDto dto, @AuthenticationPrincipal UserDetails userDetails) {
         AuthUser authUser = userDetails.authUser();
         service.createColumn(dto,authUser);
         return new ApiResponse<>(200);
@@ -53,6 +54,14 @@ public class BoardColumnController extends ApiController<BoardColumnService> {
         List<ColumnGetDto> columnGetDtos = service.getAll(board_id);
         return  new ApiResponse<>(columnGetDtos);
     }
+
+    @PutMapping(PATH+"/column/moveColumn")
+    public ApiResponse<Void> moveColumn(@RequestBody ColumnMoveDTO columnMoveDTO){
+        service.moveColumnByOrder(columnMoveDTO);
+        return  new ApiResponse<>(200);
+    }
+
+
 
 
 }

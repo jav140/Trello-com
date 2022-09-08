@@ -144,3 +144,8 @@ fabric.properties
 
 /mvnw
 /mvnw.cmd
+/scheduler.trace.db
+/scheduler.mv.db
+/src/main/resources/log4j2-spring.xml
+/log.log.2022-09-06.0.gz
+/log.log.2022-09-05.0.gz

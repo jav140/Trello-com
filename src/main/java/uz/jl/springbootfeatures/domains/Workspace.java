@@ -68,4 +68,7 @@ public class Workspace extends Auditable{
 
     }
 
+//    public List<AuthUser> getAuthUsers() {
+//        return authUsers;
+//    }
 }

@@ -1,14 +1,18 @@
 package uz.jl.springbootfeatures.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import uz.jl.springbootfeatures.domains.Workspace;
 import uz.jl.springbootfeatures.domains.auth.AuthUser;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceDto;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceGetDto;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceUpdateDto;
+import uz.jl.springbootfeatures.dtos.workspace.*;
 import uz.jl.springbootfeatures.exceptions.GenericNotFoundException;
+import uz.jl.springbootfeatures.logging.ExampleBot;
 import uz.jl.springbootfeatures.mappers.WorkspaceMapper;
+import uz.jl.springbootfeatures.repository.AuthUserRepository;
 import uz.jl.springbootfeatures.repository.WorkspaceRepository;
 
 import java.time.LocalDateTime;
@@ -16,13 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class WorkspaceService {
 
     private final WorkspaceRepository workspaceRepository;
+
+    private final AuthUserRepository authUserRepository;
     private final WorkspaceMapper workspaceMapper;
+    private String info;
+
+
+    private final ExampleBot exampleBot;
 
     public void createWorkspace(WorkspaceDto dto, AuthUser authUser) {
+        info = "create workspace method is called";
+        log.info(info);
+        exampleBot.sendInfo(info);
         List<AuthUser> members = new ArrayList<>();
         members.add(authUser);
         Workspace workspace = workspaceMapper.fromCreateDto(dto);
@@ -35,11 +49,17 @@ public class WorkspaceService {
     }
 
     public WorkspaceGetDto getById(Long id) {
+        info = "Getting One workspace by id : {} ";
+        log.info(info, id);
+        exampleBot.sendInfo(info+id);
         Workspace workspace = workspaceRepository.findById(id).orElseThrow();
         return workspaceMapper.toGetOne(workspace);
     }
 
     public WorkspaceGetDto updateWorkspace(WorkspaceUpdateDto dto) {
+         info = "updateWorkspace method is called";
+        log.info(info);
+        exampleBot.sendInfo(info);
         Workspace workspace = workspaceRepository.findById(dto.getId()).orElseThrow();
         workspace.setName(dto.getName());
         workspace.setType(dto.getType());
@@ -49,12 +69,19 @@ public class WorkspaceService {
 
     }
 
-    public List<WorkspaceGetDto> getAllWorkSpaces(Long id) {
-        List<Workspace> workspaces = workspaceRepository.findByCreatedBy(id);
-        return workspaceMapper.toGetDto(workspaces);
+    public List<WorkspaceProjection> getAllWorkSpaces(Long id) {
+        info = "Getting all workspaces by id : {} ";
+        log.info(info, id);
+        exampleBot.sendInfo(info+id);
+//        List<Workspace> workspaces = workspaceRepository.findByCreatedBy(id);
+        return workspaceRepository.toGetDto(id);
+//        return workspaceMapper.toGetDto(workspaces);
     }
 
     public void deleteById(Long id, Long userId) {
+        info = "deleting process by id : {} ";
+        log.info(info, id);
+        exampleBot.sendInfo(info);
         Workspace workspace = workspaceRepository.findById(id).orElseThrow(() ->
                 new GenericNotFoundException("Workspace not found", 404)
         );
@@ -66,4 +93,13 @@ public class WorkspaceService {
         }
 
     }
+
+//    public void inviteMembers(InviteWorkspaceMembersDto dto) {
+//        Workspace workspace = workspaceRepository.findById(dto.getWorkspaceId()).orElseThrow(() -> new GenericNotFoundException("workspace not found", 404));
+//        AuthUser authUser = authUserRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new GenericNotFoundException("user not found", 404));
+//        List<AuthUser> authUsers = workspace.getAuthUsers();
+//        authUsers.add(authUser);
+//        workspace.setAuthUsers(authUsers);
+//        workspaceRepository.save(workspace);
+//    }
 }

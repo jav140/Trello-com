@@ -27,13 +27,13 @@ public class Comment extends Auditable {
     private Task task;
 
     @ManyToOne
-    @JoinColumn(name = "authUser_id", nullable = false)
     private AuthUser authUser;
 
     @Builder(builderMethodName = "childBuilder")
-    public Comment(LocalDateTime createdAt, Long createdBy, boolean isDeleted, Long id, String body) {
+    public Comment(LocalDateTime createdAt, Long createdBy, boolean isDeleted, String body, Task task, AuthUser authUser) {
         super(createdAt, createdBy, isDeleted);
-        this.id = id;
         this.body = body;
+        this.task = task;
+        this.authUser = authUser;
     }
 }

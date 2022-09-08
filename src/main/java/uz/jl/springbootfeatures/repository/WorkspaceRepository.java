@@ -6,8 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import uz.jl.springbootfeatures.domains.Workspace;
+import uz.jl.springbootfeatures.dtos.workspace.WorkspaceGetDto;
+import uz.jl.springbootfeatures.dtos.workspace.WorkspaceProjection;
 
 import java.util.List;
+
 
 public interface WorkspaceRepository extends JpaRepository<Workspace,Long> {
 
@@ -16,7 +19,9 @@ public interface WorkspaceRepository extends JpaRepository<Workspace,Long> {
             "where id in (select workspace_id from workspace_user where user_id =:id);")
     List<Workspace> findByCreatedBy(@Param("id") Long id);
 
-
+    @Transactional
+    @Query("select t from Workspace t where t.createdBy=:id")
+    List<WorkspaceProjection> toGetDto(Long id);
 
 
 //    @Transactional

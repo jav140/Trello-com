@@ -7,6 +7,7 @@ import uz.jl.springbootfeatures.config.security.UserDetails;
 import uz.jl.springbootfeatures.domains.Board;
 import uz.jl.springbootfeatures.domains.Workspace;
 import uz.jl.springbootfeatures.domains.auth.AuthUser;
+import uz.jl.springbootfeatures.dtos.board.BoardChangeVisibilityDto;
 import uz.jl.springbootfeatures.dtos.board.BoardDto;
 import uz.jl.springbootfeatures.dtos.board.BoardGetAllDto;
 import uz.jl.springbootfeatures.dtos.board.BoardUpdateDto;
@@ -55,6 +56,18 @@ public class BoardController extends ApiController<BoardService> {
         service.deleteById(id);
         return  new ApiResponse<>(200);
     }
+
+    @GetMapping(PATH+"/board/archive/{board_id}")
+    public ApiResponse<Void> archive(@PathVariable("board_id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        service.deleteById(id);
+        return  new ApiResponse<>(200);
+    }
+
+//    @PostMapping(PATH+"/board/changeVisibility}")
+//    public ApiResponse<Void> changeVisibility(@RequestBody BoardChangeVisibilityDto dto) {
+//        service.changeVisibility(dto);
+//        return  new ApiResponse<>(200);
+//    }
 
 
 

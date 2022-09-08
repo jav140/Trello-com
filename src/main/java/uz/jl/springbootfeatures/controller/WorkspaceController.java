@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.jl.springbootfeatures.config.security.UserDetails;
 import uz.jl.springbootfeatures.domains.Workspace;
 import uz.jl.springbootfeatures.domains.auth.AuthUser;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceDto;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceGetDto;
-import uz.jl.springbootfeatures.dtos.workspace.WorkspaceUpdateDto;
+import uz.jl.springbootfeatures.dtos.workspace.*;
 import uz.jl.springbootfeatures.response.ApiResponse;
 import uz.jl.springbootfeatures.services.WorkspaceService;
 
@@ -29,8 +27,8 @@ public class WorkspaceController extends ApiController<WorkspaceService>{
 //    }
 
     @GetMapping(PATH + "/workspace/getAllNow")
-    public ApiResponse<List<WorkspaceGetDto>> getAllNow(@AuthenticationPrincipal UserDetails userDetails) {
-        List<WorkspaceGetDto> allWorkSpaces = service.getAllWorkSpaces(userDetails.authUser().getId());
+    public ApiResponse<List<WorkspaceProjection>> getAllNow(@AuthenticationPrincipal UserDetails userDetails) {
+        List<WorkspaceProjection> allWorkSpaces = service.getAllWorkSpaces(userDetails.authUser().getId());
         return new ApiResponse<>(allWorkSpaces);
     }
 
@@ -64,5 +62,12 @@ public class WorkspaceController extends ApiController<WorkspaceService>{
         return new ApiResponse<>(workspaceGetDto,200);
 
     }
+
+//    @PostMapping(PATH+"/workspace/inviteWorkspaceMembers/}")
+//    public ApiResponse<Void> inviteWorkspaceMembers(@RequestBody InviteWorkspaceMembersDto dto) {
+//        service.inviteMembers(dto);
+//        System.out.println("Members have to confirm!");
+//        return  new ApiResponse<>(200);
+//    }
 
 }

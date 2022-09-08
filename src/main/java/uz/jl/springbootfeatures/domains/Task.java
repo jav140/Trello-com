@@ -41,10 +41,13 @@ public class Task extends Auditable{
 
 
     @Builder(builderMethodName = "childBuilder")
-    public Task(LocalDateTime createdAt, Long createdBy, boolean isDeleted, Long id, String name, String description) {
+    public Task(LocalDateTime createdAt, Long createdBy, boolean isDeleted, Long id, String name, String description, BoardColumn column, List<AuthUser> authUsers) {
         super(createdAt, createdBy, isDeleted);
         this.id = id;
         this.name = name;
         this.description = description;
+        this.column = column;
+        this.authUsers = authUsers;
     }
+
 }

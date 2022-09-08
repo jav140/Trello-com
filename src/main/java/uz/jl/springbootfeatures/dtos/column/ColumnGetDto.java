@@ -13,7 +13,7 @@ public class ColumnGetDto {
 
     private Long id;
     private String name;
-    private int order;
+    private int orderColumn;
     private LocalDateTime createdAt;
     private boolean isDeleted;
 

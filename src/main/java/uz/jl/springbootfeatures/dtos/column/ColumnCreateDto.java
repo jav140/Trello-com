@@ -11,13 +11,10 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class ColumnCreateDto {
 
-    @NotBlank(message = "board id cannot be blank")
     private Long board_id;
 
-    @NotBlank(message = "column name cannot be blank")
     private String name;
 
-    @NotBlank(message = "column order cannot be blank")
-    private int order;
+    private int orderColumn;
 
 }

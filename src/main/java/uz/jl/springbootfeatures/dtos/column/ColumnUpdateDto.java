@@ -13,6 +13,6 @@ public class ColumnUpdateDto {
 
     private Long id;
     private String name;
-    private int order;
+    private int orderColumn;
 
 }

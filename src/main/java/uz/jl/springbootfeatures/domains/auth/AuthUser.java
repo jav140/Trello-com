@@ -46,6 +46,7 @@ public class AuthUser {
     @Builder.Default
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+
     private Status status = Status.ACTIVE;
 
 

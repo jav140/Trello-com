@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uz.jl.springbootfeatures.domains.Board;
 import uz.jl.springbootfeatures.domains.Workspace;
 import uz.jl.springbootfeatures.domains.auth.AuthUser;
+import uz.jl.springbootfeatures.dtos.board.BoardChangeVisibilityDto;
 import uz.jl.springbootfeatures.dtos.board.BoardDto;
 import uz.jl.springbootfeatures.dtos.board.BoardGetAllDto;
 import uz.jl.springbootfeatures.dtos.board.BoardUpdateDto;
@@ -38,6 +39,7 @@ public class BoardService  {
         board.setCreatedBy(authUser.getId());
         System.out.println(board);
         boardRepository.save(board);
+
     }
 
     public BoardGetAllDto getById(Long id) {
@@ -68,4 +70,10 @@ public class BoardService  {
         return boardMapper.toListBoardUpdates(boards);
 
     }
+
+//    public void changeVisibility(BoardChangeVisibilityDto dto) {
+//        Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new GenericNotFoundException("Board not found", 404));
+//        board.setVisibility(String.valueOf(dto.getVisibility()));
+//        boardRepository.save(board);
+//    }
 }

@@ -25,7 +25,6 @@ import static uz.jl.springbootfeatures.config.security.SecurityConstants.WHITE_L
  * spring-boot-features/IntelliJ IDEA
  */
 public class JWTFilter extends OncePerRequestFilter {
-
     private final TokenService tokenService;
     private final AuthUserService authUserService;
 

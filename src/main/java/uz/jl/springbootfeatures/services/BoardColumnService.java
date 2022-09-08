@@ -2,11 +2,14 @@ package uz.jl.springbootfeatures.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.jl.springbootfeatures.config.events.EventPublisher;
+import uz.jl.springbootfeatures.config.events.GenericEvent;
 import uz.jl.springbootfeatures.domains.Board;
 import uz.jl.springbootfeatures.domains.BoardColumn;
 import uz.jl.springbootfeatures.domains.auth.AuthUser;
 import uz.jl.springbootfeatures.dtos.column.ColumnCreateDto;
 import uz.jl.springbootfeatures.dtos.column.ColumnGetDto;
+import uz.jl.springbootfeatures.dtos.column.ColumnMoveDTO;
 import uz.jl.springbootfeatures.dtos.column.ColumnUpdateDto;
 import uz.jl.springbootfeatures.exceptions.GenericNotFoundException;
 import uz.jl.springbootfeatures.mappers.BoardMapper;
@@ -25,6 +28,8 @@ public class BoardColumnService {
     private final ColumnRepository columnRepository;
     private final BoardRepository boardRepository;
     private final ColumnMapper columnMapper;
+    private final EventPublisher publisher;
+
 
     public void createColumn(ColumnCreateDto dto, AuthUser authUser) {
         Board board = boardRepository.findById(dto.getBoard_id()).orElseThrow(() -> new GenericNotFoundException("Board not found", 404));
@@ -39,8 +44,9 @@ public class BoardColumnService {
     public ColumnGetDto updateColumn(ColumnUpdateDto dto) {
 
         BoardColumn boardColumn = columnRepository.findById(dto.getId()).orElseThrow(() -> new GenericNotFoundException("Column not found", 404));
-        boardColumn.setOrderColumn(dto.getOrder());
+        boardColumn.setOrderColumn(dto.getOrderColumn());
         boardColumn.setName(dto.getName());
+        columnRepository.save(boardColumn);
         return columnMapper.toGetDto(boardColumn);
 
     }
@@ -59,5 +65,10 @@ public class BoardColumnService {
     public List<ColumnGetDto> getAll(Long board_id) {
        List<BoardColumn> boardColumns = columnRepository.findByBoardId(board_id);
         return columnMapper.toListGetDto(boardColumns);
+    }
+    public void moveColumnByOrder(ColumnMoveDTO columnMoveDTO) {
+        columnRepository.findById(columnMoveDTO.getColumnId()).orElseThrow(() -> new GenericNotFoundException("column not found",404));
+        GenericEvent<ColumnMoveDTO> columnMoveDTOGenericEvent = new GenericEvent<>(columnMoveDTO, true);
+        publisher.publishCustomEvent(columnMoveDTOGenericEvent);
     }
 }
